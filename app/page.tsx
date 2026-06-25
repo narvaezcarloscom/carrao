@@ -54,7 +54,7 @@ export default function Home() {
 
       <section>
         <span className="layer-tag">Qué hago ahora</span>
-        <h2>Si te quedaste sin hogar</h2>
+        <h2>Si tu hogar ya no es un lugar seguro</h2>
         <p className="section-note">
           Contacta a Protección Civil y ubica el refugio oficial más cercano.
           Mantén juntos tus documentos, agua y medicinas. No regreses a una
