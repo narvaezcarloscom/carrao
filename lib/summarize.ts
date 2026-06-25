@@ -4,7 +4,13 @@ import Anthropic from "@anthropic-ai/sdk";
 // La IA solo reformula lo que la fuente ya dijo; no agrega ningún dato.
 // Modelo: Haiku 4.5 (suficiente para resumen + traducción, costo mínimo).
 
-const client = new Anthropic(); // lee ANTHROPIC_API_KEY del entorno
+// Inicialización perezosa: construir el cliente sin ANTHROPIC_API_KEY lanza
+// error. Diferirlo evita romper el import (y /api/feed) cuando aún no hay key.
+let _client: Anthropic | null = null;
+function getClient(): Anthropic {
+  if (!_client) _client = new Anthropic();
+  return _client;
+}
 
 const SYSTEM = `Eres un asistente de un puente de información de emergencia para Venezuela.
 Tu única tarea es condensar y traducir al español neutral de Venezuela lo que una fuente confiable YA publicó.
@@ -66,7 +72,7 @@ ${input.content.slice(0, 4000)}`;
       messages: [{ role: "user" as const, content: user }],
     } as unknown as Anthropic.MessageCreateParamsNonStreaming;
 
-    const res = await client.messages.create(body);
+    const res = await getClient().messages.create(body);
     const block = res.content.find((b) => b.type === "text");
     if (!block || block.type !== "text") return null;
 
