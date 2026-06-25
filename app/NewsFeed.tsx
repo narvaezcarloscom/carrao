@@ -104,6 +104,11 @@ export default function NewsFeed() {
           Actualizado {ago(feed.updatedAt, now)} · se revisa cada 15 min
         </p>
       )}
+      <p className="feed-note">
+        Algunos enlaces pueden estar bloqueados por tu proveedor de internet
+        dentro de Venezuela y no abrir. Por eso te dejamos el resumen aquí: es
+        lo esencial de lo que dice la fuente.
+      </p>
       <div className="news">
         {feed.items.map((it) => {
           const pill = PILL[it.sourceType] ?? PILL.intl;
@@ -126,11 +131,6 @@ export default function NewsFeed() {
           );
         })}
       </div>
-      <p className="feed-note">
-        Algunos enlaces pueden estar bloqueados por tu proveedor de internet
-        dentro de Venezuela y no abrir. Por eso te dejamos el resumen aquí: es
-        lo esencial de lo que dice la fuente.
-      </p>
     </>
   );
 }

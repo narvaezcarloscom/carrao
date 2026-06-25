@@ -305,12 +305,13 @@ h2 {
   margin-top: 12px;
 }
 .feed-note {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
+  margin-top: 12px;
+  padding: 11px 13px;
+  background: var(--accent-soft);
+  border-radius: 9px;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--ink-soft);
+  color: #7c2d12;
 }
 .news {
   margin-top: 12px;
