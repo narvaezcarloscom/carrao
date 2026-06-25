@@ -100,16 +100,15 @@ export default function Home() {
         <div className="links">
           <a
             className="link-card"
-            href="https://familylinks.icrc.org/"
+            href="https://cruzroja.ve/"
             target="_blank"
             rel="noopener"
           >
             <div className="lc-title">
-              Cruz Roja — Restablecimiento del Contacto Familiar{" "}
-              <span className="arrow">→</span>
+              Cruz Roja Venezolana <span className="arrow">→</span>
             </div>
             <div className="lc-meta">
-              Servicio internacional del CICR para localizar familiares
+              Atención, primeros auxilios y restablecimiento del contacto familiar
             </div>
           </a>
         </div>
