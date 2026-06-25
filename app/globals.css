@@ -1,0 +1,278 @@
+:root {
+  --bg: #f7f4ec;
+  --surface: #fffdf8;
+  --ink: #1b1a17;
+  --ink-soft: #57534b;
+  --line: #e4ded0;
+  --accent: #b45309; /* ambar llanero: anuncio, no alarma */
+  --accent-soft: #fdf0dd;
+  --danger: #b91c1c;
+  --danger-soft: #fbe9e9;
+  --ok: #15803d;
+  --ok-soft: #e8f3ec;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 17px;
+  text-rendering: optimizeSpeed;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 18px 64px;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 2px;
+}
+
+/* ---------- Cabecera ---------- */
+.masthead {
+  padding: 28px 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.tagline {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.lede {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.lede strong {
+  color: var(--ink);
+}
+
+/* ---------- Secciones / capas ---------- */
+section {
+  margin-top: 32px;
+}
+.layer-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+h2 {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-top: 4px;
+}
+.section-note {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Tarjeta sismica en vivo ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+}
+.live-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.live-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ok);
+}
+.live-dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.updated {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.mag {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.mag-label {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.quake-place {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.quake-meta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.stat {
+  background: var(--bg);
+  border-radius: 9px;
+  padding: 11px 13px;
+}
+.stat-num {
+  font-size: 22px;
+  font-weight: 800;
+}
+.stat-cap {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.banner {
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+.banner-ok { background: var(--ok-soft); color: #14532d; }
+.banner-danger { background: var(--danger-soft); color: #7f1d1d; font-weight: 600; }
+.banner-neutral { background: var(--accent-soft); color: #7c2d12; }
+
+.retry {
+  font-size: 12px;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* ---------- Listas de proteccion / enlaces ---------- */
+.steps {
+  margin-top: 14px;
+  list-style: none;
+  counter-reset: step;
+}
+.steps li {
+  position: relative;
+  padding: 10px 0 10px 38px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+}
+.steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 26px;
+  height: 26px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.steps li strong { display: block; }
+
+.links {
+  margin-top: 14px;
+  display: grid;
+  gap: 9px;
+}
+.link-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 13px 15px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.link-card:active { background: var(--bg); }
+.link-card .lc-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+.link-card .lc-title .arrow { color: var(--accent); }
+.link-card .lc-meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+.src-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 5px;
+  margin-right: 7px;
+  vertical-align: 1px;
+}
+.pill-sci { background: var(--accent-soft); color: var(--accent); }
+.pill-intl { background: #e8eef6; color: #1e3a5f; }
+.pill-ve { background: var(--ok-soft); color: #14532d; }
+
+/* ---------- Pie ---------- */
+footer {
+  margin-top: 48px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+footer p { margin-top: 9px; }
+footer strong { color: var(--ink); }
+
+.soon {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 10px;
+}
