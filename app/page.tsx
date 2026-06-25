@@ -28,7 +28,7 @@ export default function Home() {
       {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}
       <section>
         <span className="layer-tag">Qué está pasando</span>
-        <h2>Lo que dicen las fuentes confiables</h2>
+        <h2>Lo que dicen fuentes nacionales e internacionales</h2>
         <p className="section-note">
           Resumen traducido de fuentes que ya verificaron su información. Cada
           tarjeta enlaza a la fuente original. No producimos noticias: las
