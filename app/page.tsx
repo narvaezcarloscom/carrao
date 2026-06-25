@@ -121,31 +121,35 @@ export default function Home() {
           original. No hospedamos datos personales.
         </p>
         <p>
+          Es un esfuerzo independiente y sin fines de lucro. No tiene afiliación
+          ni postura política: solo retransmite lo que fuentes confiables ya
+          publicaron.
+        </p>
+        <p>
           El estado sísmico se actualiza en vivo desde USGS; la marca de tiempo
           refleja la última consulta exitosa de tu dispositivo.
         </p>
-        <p>
-          Creado por <strong>Carlos Narvaez</strong> —{" "}
+        <p className="footer-fine">
+          Creado por Carlos Narvaez ·{" "}
           <a href="https://narvaezcarlos.com" target="_blank" rel="noopener">
             Narvaez Digital Marketing
           </a>{" "}
-          — junto con Claude Code. Uso no comercial bajo licencia{" "}
+          · con Claude Code · Uso no comercial (
           <a
             href="https://github.com/narvaezcarloscom/carrao/blob/main/LICENSE"
             target="_blank"
             rel="noopener"
           >
-            PolyForm Noncommercial 1.0.0
+            PolyForm 1.0.0
           </a>
-          . Código abierto en{" "}
+          ) ·{" "}
           <a
             href="https://github.com/narvaezcarloscom/carrao"
             target="_blank"
             rel="noopener"
           >
-            GitHub
+            Código abierto
           </a>
-          .
         </p>
       </footer>
     </main>

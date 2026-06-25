@@ -361,6 +361,12 @@ footer {
 }
 footer p { margin-top: 9px; }
 footer strong { color: var(--ink); }
+.footer-fine {
+  margin-top: 16px;
+  font-size: 11px;
+  color: #9a948a;
+}
+.footer-fine a { color: #9a948a; text-decoration: underline; }
 
 .soon {
   font-size: 13px;
