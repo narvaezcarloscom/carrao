@@ -304,6 +304,14 @@ h2 {
   color: var(--ink-soft);
   margin-top: 12px;
 }
+.feed-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
 .news {
   margin-top: 12px;
   display: grid;

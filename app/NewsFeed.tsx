@@ -126,6 +126,11 @@ export default function NewsFeed() {
           );
         })}
       </div>
+      <p className="feed-note">
+        Algunos enlaces pueden estar bloqueados por tu proveedor de internet
+        dentro de Venezuela y no abrir. Por eso te dejamos el resumen aquí: es
+        lo esencial de lo que dice la fuente.
+      </p>
     </>
   );
 }
