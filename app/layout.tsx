@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Carrao — Información de emergencia verificada · Venezuela",
     description:
-      "Réplicas y tsunami en vivo, qué hacer ahora y dónde buscar a tu gente. Información verificada y ligera.",
+      "Un puente, no un medio: reunimos lo que las fuentes confiables ya verificaron y te lo damos ligero. Réplicas, tsunami, qué hacer y dónde buscar a tu gente.",
     locale: "es_VE",
     type: "website",
     url: "https://carraocanta.com",
