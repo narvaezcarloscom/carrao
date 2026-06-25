@@ -59,4 +59,13 @@ Creado por **Carlos Narvaez** — [Narvaez Digital Marketing](https://narvaezcar
 
 ## Licencia
 
-[MIT](LICENSE).
+[PolyForm Noncommercial License 1.0.0](LICENSE).
+
+Carrao es de **uso libre para fines no comerciales**: puedes usarlo, modificarlo,
+distribuirlo y desplegarlo sin costo. La licencia permite explícitamente el uso
+por organizaciones de caridad, educativas, de investigación, de seguridad pública
+o salud, ambientales y gobiernos. **No se permite el uso comercial** (vender el
+software o lucrar con él). La atribución se agradece, aunque no es obligación más
+allá de conservar el aviso de la licencia.
+
+`Required Notice: Copyright Carlos A. Narvaez Urbina / Narvaez Digital Marketing (https://narvaezcarlos.com)`
