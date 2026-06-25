@@ -13,7 +13,7 @@ export type Source = {
 export const SOURCES: Source[] = [
   // Internacionales (wire / humanitaria)
   { name: "BBC Mundo", feedUrl: "https://feeds.bbci.co.uk/mundo/rss.xml", type: "intl" },
-  { name: "ReliefWeb", feedUrl: "https://reliefweb.int/country/ven/rss.xml", type: "intl" },
+  { name: "ReliefWeb", feedUrl: "https://reliefweb.int/updates/rss.xml?primary_country=240", type: "intl" },
   // Venezolanas independientes (curaduría de Carlos)
   { name: "Efecto Cocuyo", feedUrl: "https://efectococuyo.com/feed/", type: "ve" },
   { name: "El Pitazo", feedUrl: "https://elpitazo.net/feed/", type: "ve" },
