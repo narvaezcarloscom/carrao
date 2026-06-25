@@ -5,11 +5,11 @@ export default function Home() {
     <main>
       <header className="masthead">
         <div className="brand">Carrao</div>
-        <p className="tagline">Cuando el carrao canta, el llano se prepara.</p>
         <p className="lede">
           <strong>No somos un medio. Somos un puente.</strong> Reunimos lo que
-          las fuentes confiables ya verificaron y te lo damos ligero, para tu
-          teléfono y tu conexión. Información de emergencia para Venezuela.
+          fuentes confiables ya verificaron y lo ponemos a tu disposición en un
+          formato ligero, para momentos en que la conexión podría estar
+          saturada. Información sobre el contexto de emergencia en Venezuela.
         </p>
       </header>
 
