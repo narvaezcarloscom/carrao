@@ -94,10 +94,12 @@ Feed ordenado **más reciente primero**, con hora visible en cada tarjeta.
 - **BBC Mundo** — español, rigor editorial.
 - **ReliefWeb (ONU/OCHA)** — fuente humanitaria oficial para "¿quién nos apoya?".
 
-**Capa 2 · Venezolano creíble** (curaduría de Carlos)
+**Capa 2 · Venezolano creíble** (curaduría de Carlos, confirmada)
 - **Efecto Cocuyo** — independiente, fuerte en verificación.
 - **El Pitazo** — investigativo, red de corresponsales.
 - **Runrun.es** — credibilidad alta.
+
+*Evaluado y descartado:* **El Universal** — diario histórico (1909), pero tras la venta de 2014 perdió independencia editorial y hoy su credibilidad como verificador independiente es discutida. No entra en la allowlist v1.
 
 **A favor:** varios medios venezolanos están bloqueados por ISP dentro del país. Como nosotros los consumimos y el lector lee *nuestro* resumen, la agregación **rodea el bloqueo local** — característica, no accidente.
 
@@ -170,3 +172,7 @@ Se separa: **registro de fuentes** reusable (amplio, plantilla a futuro) vs **fu
 - Contador público basado en último éxito.
 - Nombre **Carrao**, dominio **carraocanta.com**.
 - Identidad: puente de información verificada, no medio.
+- Fuentes v1 confirmadas (incluida capa venezolana: Efecto Cocuyo, El Pitazo, Runrun.es; El Universal descartado; Funvisis con USGS/EMSC como respaldo primario).
+- Intervalos confirmados: sísmico ~2 min, noticias ~15 min.
+- Licencia: PolyForm Noncommercial 1.0.0.
+- Repositorio público: github.com/narvaezcarloscom/carrao.
