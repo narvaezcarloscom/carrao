@@ -76,7 +76,7 @@ export default function Home() {
         <div className="links">
           <a
             className="link-card"
-            href="https://www.instagram.com/pcivil_ve/"
+            href="https://www.instagram.com/pcivil_venezuela/"
             target="_blank"
             rel="noopener"
           >
