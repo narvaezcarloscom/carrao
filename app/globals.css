@@ -143,7 +143,7 @@ h2 {
   text-transform: uppercase;
 }
 .quake-place {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -151,6 +151,45 @@ h2 {
   margin-top: 4px;
   font-size: 14px;
   color: var(--ink-soft);
+}
+
+/* ---------- Veredicto: la respuesta en palabras ---------- */
+.verdict {
+  border-radius: 11px;
+  padding: 15px 16px;
+  margin-top: 16px;
+}
+.verdict-headline {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.verdict-message {
+  font-size: 15px;
+  line-height: 1.45;
+  margin-top: 6px;
+}
+.verdict-ok { background: var(--ok-soft); }
+.verdict-ok .verdict-headline { color: #14532d; }
+.verdict-ok .verdict-message { color: #1f5135; }
+.verdict-elevated { background: var(--accent-soft); }
+.verdict-elevated .verdict-headline { color: #7c2d12; }
+.verdict-elevated .verdict-message { color: #7c2d12; }
+.verdict-danger { background: var(--danger-soft); }
+.verdict-danger .verdict-headline { color: #7f1d1d; }
+.verdict-danger .verdict-message { color: #7f1d1d; }
+
+.quake-detail {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.mag-meaning {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
 }
 .stat-grid {
   display: grid;

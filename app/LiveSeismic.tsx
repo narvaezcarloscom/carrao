@@ -53,6 +53,63 @@ function ago(ms: number, now: number): string {
   return `hace ${d} ${d === 1 ? "día" : "días"}`;
 }
 
+// Qué significa el número para una persona, no para un sismólogo.
+function magMeaning(m: number | null): string {
+  if (m == null) return "";
+  if (m < 3) return "casi no se siente";
+  if (m < 4) return "se siente leve, sin daños";
+  if (m < 5) return "se siente, rara vez causa daños";
+  if (m < 6) return "fuerte, puede causar daños menores";
+  if (m < 7) return "muy fuerte, puede causar daños";
+  return "violento, puede causar daños serios";
+}
+
+type Verdict = { level: "ok" | "elevated" | "danger"; headline: string; message: string };
+
+// La respuesta en palabras a "¿estoy a salvo de otro suceso?".
+// Honesto: describe el estado actual, nunca promete que no habrá más sismos.
+function computeVerdict(
+  quakes: Quake[],
+  now: number,
+  tsunamiFlag: boolean
+): Verdict {
+  const last24h = quakes.filter((q) => now - q.time < 86_400_000).length;
+  const recentStrong = quakes.some(
+    (q) => (q.mag ?? 0) >= 4.5 && now - q.time < 3 * 3_600_000
+  );
+
+  if (tsunamiFlag) {
+    return {
+      level: "danger",
+      headline: "Revisa el aviso de tsunami",
+      message:
+        "Un sismo reciente pudo generar tsunami. Si estás cerca de la costa, aléjate hacia un lugar alto y confirma el estado oficial ahora mismo.",
+    };
+  }
+  if (recentStrong) {
+    return {
+      level: "elevated",
+      headline: "La tierra sigue muy activa",
+      message:
+        "Siguen ocurriendo movimientos fuertes. Mantente alerta, lejos de ventanas y de estructuras con daños, y ten lista tu salida.",
+    };
+  }
+  if (last24h > 0) {
+    return {
+      level: "ok",
+      headline: "El movimiento fuerte ya pasó",
+      message:
+        "El temblor más fuerte quedó atrás. Las réplicas que siguen son más débiles y son normales; pueden durar días. Por ahora, con calma, pero mantente atento.",
+    };
+  }
+  return {
+    level: "ok",
+    headline: "Con calma por ahora",
+    message:
+      "No hay movimientos en las últimas 24 horas. Las réplicas pueden volver, así que ten tu plan a la mano.",
+  };
+}
+
 export default function LiveSeismic() {
   const [state, setState] = useState<State>({
     quakes: [],
@@ -145,6 +202,7 @@ export default function LiveSeismic() {
   );
   const last24h = quakes.filter((q) => now - q.time < 86_400_000).length;
   const tsunamiFlag = largest.tsunami === 1;
+  const verdict = computeVerdict(quakes, now, tsunamiFlag);
 
   return (
     <div className="card">
@@ -159,41 +217,18 @@ export default function LiveSeismic() {
         </span>
       </div>
 
-      <div style={{ marginTop: 14 }}>
-        <span className="mag-label">Último movimiento registrado</span>
-        <div className="live-row" style={{ alignItems: "flex-end" }}>
-          <span className="mag">
-            {latest.mag != null ? latest.mag.toFixed(1) : "—"}
-          </span>
-          <span className="updated">{ago(latest.time, now)}</span>
-        </div>
-        <div className="quake-place">{translatePlace(latest.place)}</div>
-        <div className="quake-meta">
-          {latest.depth != null
-            ? `${Math.round(latest.depth)} km de profundidad`
-            : "Profundidad no disponible"}
-          {latest.magType ? ` · ${latest.magType}` : ""}
-        </div>
+      {/* La respuesta, en palabras: ¿estoy a salvo de otro suceso? */}
+      <div className={`verdict verdict-${verdict.level}`}>
+        <div className="verdict-headline">{verdict.headline}</div>
+        <div className="verdict-message">{verdict.message}</div>
       </div>
 
-      <div className="stat-grid">
-        <div className="stat">
-          <div className="stat-num">{last24h}</div>
-          <div className="stat-cap">movimientos en 24 h</div>
-        </div>
-        <div className="stat">
-          <div className="stat-num">
-            {largest.mag != null ? largest.mag.toFixed(1) : "—"}
-          </div>
-          <div className="stat-cap">mayor en {WINDOW_DAYS} días</div>
-        </div>
-      </div>
-
-      <div className={`banner ${tsunamiFlag ? "banner-neutral" : "banner-ok"}`}>
+      {/* Tsunami: respuesta directa */}
+      <div className={`banner ${tsunamiFlag ? "banner-danger" : "banner-ok"}`}>
         {tsunamiFlag ? (
           <>
-            Un sismo reciente activó revisión de tsunami. Confirma el aviso
-            oficial vigente en{" "}
+            Si estás cerca de la costa, aléjate hacia un lugar alto. Confirma el
+            aviso oficial en{" "}
             <a href="https://www.tsunami.gov" target="_blank" rel="noopener">
               tsunami.gov
             </a>
@@ -201,7 +236,7 @@ export default function LiveSeismic() {
           </>
         ) : (
           <>
-            Sin alerta de tsunami activa por estos sismos. Estado oficial:{" "}
+            No hay alerta de tsunami activa por estos sismos. Estado oficial:{" "}
             <a href="https://www.tsunami.gov" target="_blank" rel="noopener">
               tsunami.gov
             </a>
@@ -210,10 +245,41 @@ export default function LiveSeismic() {
         )}
       </div>
 
+      {/* Detalle interpretado: el número ya significa algo */}
+      <div className="quake-detail">
+        <span className="mag-label">Último temblor · {ago(latest.time, now)}</span>
+        <div className="mag">
+          {latest.mag != null ? latest.mag.toFixed(1) : "—"}
+        </div>
+        <div className="mag-meaning">{magMeaning(latest.mag)}</div>
+        <div className="quake-place">{translatePlace(latest.place)}</div>
+        {latest.depth != null && (
+          <div className="quake-meta">
+            {Math.round(latest.depth)} km de profundidad
+          </div>
+        )}
+      </div>
+
+      <div className="stat-grid">
+        <div className="stat">
+          <div className="stat-num">{last24h}</div>
+          <div className="stat-cap">
+            {last24h === 1 ? "réplica en 24 h" : "réplicas en 24 h"}
+          </div>
+        </div>
+        <div className="stat">
+          <div className="stat-num">
+            {largest.mag != null ? largest.mag.toFixed(1) : "—"}
+          </div>
+          <div className="stat-cap">
+            el sismo principal · {ago(largest.time, now)}
+          </div>
+        </div>
+      </div>
+
       <p className="updated" style={{ marginTop: 12 }}>
-        Las réplicas son normales tras un sismo fuerte y pueden seguir días o
-        semanas. Datos: U.S. Geological Survey (USGS), región Venezuela,
-        magnitud {MIN_MAG}+.
+        No se puede predecir un sismo. Te mostramos lo que ya ocurrió, según el
+        U.S. Geological Survey (USGS) para la región Venezuela.
       </p>
     </div>
   );
