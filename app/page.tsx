@@ -25,6 +25,18 @@ export default function Home() {
         <LiveSeismic />
       </section>
 
+      {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}
+      <section>
+        <span className="layer-tag">Qué está pasando</span>
+        <h2>Lo que dicen las fuentes confiables</h2>
+        <p className="section-note">
+          Resumen traducido de fuentes que ya verificaron su información. Cada
+          tarjeta enlaza a la fuente original. No producimos noticias: las
+          reunimos.
+        </p>
+        <NewsFeed />
+      </section>
+
       {/* ---------- Capa 3: qué hago ahora ---------- */}
       <section>
         <span className="layer-tag">Qué hago ahora</span>
@@ -101,18 +113,6 @@ export default function Home() {
             </div>
           </a>
         </div>
-      </section>
-
-      {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}
-      <section>
-        <span className="layer-tag">Qué está pasando</span>
-        <h2>Lo que dicen las fuentes confiables</h2>
-        <p className="section-note">
-          Resumen traducido de fuentes que ya verificaron su información. Cada
-          tarjeta enlaza a la fuente original. No producimos noticias: las
-          reunimos.
-        </p>
-        <NewsFeed />
       </section>
 
       <footer>
