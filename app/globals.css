@@ -20,6 +20,10 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 body {
@@ -68,9 +72,38 @@ a {
   color: var(--ink);
 }
 
+/* ---------- Barra de salto (sticky, wayfinding) ---------- */
+.jump {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  margin: 0 -18px;
+  padding: 6px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.jump a {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 14px 4px;
+  border-radius: 8px;
+}
+.jump a:active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
 /* ---------- Secciones / capas ---------- */
 section {
   margin-top: 32px;
+  scroll-margin-top: 66px; /* deja respiro bajo la barra fija al saltar */
 }
 .layer-tag {
   font-size: 12px;
@@ -376,6 +409,21 @@ h2 {
   color: var(--accent);
   margin-top: 9px;
 }
+.more-btn {
+  font-family: inherit;
+  display: block;
+  width: 100%;
+  margin-top: 11px;
+  padding: 13px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+.more-btn:active { background: var(--bg); }
 
 /* ---------- Pie ---------- */
 footer {

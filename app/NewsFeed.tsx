@@ -64,6 +64,8 @@ export default function NewsFeed() {
   const [now, setNow] = useState(() => Date.now());
   // Filtro de vista (cliente): no toca el pipeline ni la red, solo qué se pinta.
   const [filter, setFilter] = useState<"all" | "ve" | "intl">("all");
+  // Colapso: por defecto solo las 6 más frescas, para no muralla de scroll.
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -105,6 +107,8 @@ export default function NewsFeed() {
     filter === "all"
       ? feed.items
       : feed.items.filter((i) => i.sourceType === filter);
+  const COLLAPSED = 6;
+  const visible = expanded ? shown : shown.slice(0, COLLAPSED);
 
   return (
     <>
@@ -139,7 +143,7 @@ export default function NewsFeed() {
       </div>
 
       <div className="news">
-        {shown.map((it) => {
+        {visible.map((it) => {
           const pill = PILL[it.sourceType] ?? PILL.intl;
           return (
             <a
@@ -160,6 +164,11 @@ export default function NewsFeed() {
           );
         })}
       </div>
+      {!expanded && shown.length > COLLAPSED && (
+        <button className="more-btn" onClick={() => setExpanded(true)}>
+          Ver más noticias ({shown.length})
+        </button>
+      )}
     </>
   );
 }

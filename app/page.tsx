@@ -14,8 +14,15 @@ export default function Home() {
         </p>
       </header>
 
+      <nav className="jump" aria-label="Secciones">
+        <a href="#ahora">Ahora</a>
+        <a href="#noticias">Noticias</a>
+        <a href="#quehacer">Qué hacer</a>
+        <a href="#migente">Mi gente</a>
+      </nav>
+
       {/* ---------- Capa 1: peligro inmediato ---------- */}
-      <section>
+      <section id="ahora">
         <span className="layer-tag">Ahora mismo</span>
         <h2>¿Sigue temblando? ¿Hay tsunami?</h2>
         <p className="section-note">
@@ -26,7 +33,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}
-      <section>
+      <section id="noticias">
         <span className="layer-tag">Qué está pasando</span>
         <h2>Lo que dicen fuentes nacionales e internacionales</h2>
         <p className="section-note">
@@ -38,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 3: qué hago ahora ---------- */}
-      <section>
+      <section id="quehacer">
         <span className="layer-tag">Qué hago ahora</span>
         <h2>Si vuelve a temblar</h2>
         <ol className="steps">
@@ -89,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 4: mi gente ---------- */}
-      <section>
+      <section id="migente">
         <span className="layer-tag">Mi gente</span>
         <h2>Busco a un familiar</h2>
         <p className="section-note">
