@@ -1,7 +1,13 @@
 import LiveSeismic from "./LiveSeismic";
 import NewsFeed from "./NewsFeed";
+import { readFeed } from "@/lib/feed";
 
-export default function Home() {
+// ISR: regenera el HTML (con el feed embebido) cada 60s, igual que la caché
+// de /api/feed. Las noticias van en el HTML inicial → sin layout shift (CLS).
+export const revalidate = 60;
+
+export default async function Home() {
+  const initialFeed = await readFeed();
   return (
     <main>
       <header className="masthead">
@@ -40,7 +46,7 @@ export default function Home() {
           tarjeta enlaza a la fuente original. No producimos noticias: las
           reunimos.
         </p>
-        <NewsFeed />
+        <NewsFeed initialFeed={initialFeed} />
       </section>
 
       {/* ---------- Capa 3: qué hago ahora ---------- */}

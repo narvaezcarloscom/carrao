@@ -58,9 +58,14 @@ function SourceLinks() {
   );
 }
 
-export default function NewsFeed() {
-  const [feed, setFeed] = useState<Feed | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function NewsFeed({
+  initialFeed,
+}: {
+  initialFeed?: Feed | null;
+}) {
+  // Feed embebido desde el servidor (ISR) → sin flash de carga ni CLS.
+  const [feed, setFeed] = useState<Feed | null>(initialFeed ?? null);
+  const [loading, setLoading] = useState(!initialFeed);
   const [now, setNow] = useState(() => Date.now());
   // Filtro de vista (cliente): no toca el pipeline ni la red, solo qué se pinta.
   const [filter, setFilter] = useState<"all" | "ve" | "intl">("all");
@@ -83,7 +88,7 @@ export default function NewsFeed() {
     };
     load();
     const poll = setInterval(load, POLL_MS);
-    const tick = setInterval(() => setNow(Date.now()), 1000);
+    const tick = setInterval(() => setNow(Date.now()), 30_000);
     return () => {
       alive = false;
       clearInterval(poll);

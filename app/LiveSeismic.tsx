@@ -162,7 +162,7 @@ export default function LiveSeismic() {
   useEffect(() => {
     load();
     const poll = setInterval(load, POLL_MS);
-    const tick = setInterval(() => setNow(Date.now()), 1000);
+    const tick = setInterval(() => setNow(Date.now()), 30_000);
     return () => {
       clearInterval(poll);
       clearInterval(tick);
