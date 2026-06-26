@@ -102,21 +102,39 @@ a {
 
 /* ---------- Secciones / capas ---------- */
 section {
-  margin-top: 32px;
+  margin-top: 40px;
   scroll-margin-top: 66px; /* deja respiro bajo la barra fija al saltar */
 }
+/* Color semántico por sección: codifica la función, no decora.
+   Colores explícitos (sin color-mix) para no romper en teléfonos viejos. */
+.sec-now { --sec: #b45309; }    /* sísmico: alerta calmada */
+.sec-news { --sec: #33566f; }   /* noticias: info del mundo */
+.sec-do { --sec: #15803d; }     /* qué hacer: acción que protege */
+.sec-people { --sec: #6e4368; } /* mi gente: humano */
+
 .layer-tag {
+  display: block;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--sec, var(--accent));
+}
+.layer-tag::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--sec, var(--accent));
+  margin-bottom: 12px;
 }
 h2 {
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: -0.01em;
-  margin-top: 4px;
+  letter-spacing: -0.012em;
+  line-height: 1.18;
+  margin-top: 9px;
 }
 .section-note {
   margin-top: 6px;

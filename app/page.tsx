@@ -22,7 +22,7 @@ export default function Home() {
       </nav>
 
       {/* ---------- Capa 1: peligro inmediato ---------- */}
-      <section id="ahora">
+      <section id="ahora" className="sec-now">
         <span className="layer-tag">Ahora mismo</span>
         <h2>¿Sigue temblando? ¿Hay tsunami?</h2>
         <p className="section-note">
@@ -33,7 +33,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}
-      <section id="noticias">
+      <section id="noticias" className="sec-news">
         <span className="layer-tag">Qué está pasando</span>
         <h2>Lo que dicen fuentes nacionales e internacionales</h2>
         <p className="section-note">
@@ -45,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 3: qué hago ahora ---------- */}
-      <section id="quehacer">
+      <section id="quehacer" className="sec-do">
         <span className="layer-tag">Qué hago ahora</span>
         <h2>Si vuelve a temblar</h2>
         <ol className="steps">
@@ -72,7 +72,7 @@ export default function Home() {
         </ol>
       </section>
 
-      <section>
+      <section className="sec-do">
         <span className="layer-tag">Qué hago ahora</span>
         <h2>Si tu hogar ya no es un lugar seguro</h2>
         <p className="section-note">
@@ -96,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Capa 4: mi gente ---------- */}
-      <section id="migente">
+      <section id="migente" className="sec-people">
         <span className="layer-tag">Mi gente</span>
         <h2>Busco a un familiar</h2>
         <p className="section-note">
