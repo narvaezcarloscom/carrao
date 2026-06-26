@@ -18,7 +18,6 @@ export default function Home() {
         <a href="#ahora">Ahora</a>
         <a href="#noticias">Noticias</a>
         <a href="#quehacer">Qué hacer</a>
-        <a href="#migente">Mi gente</a>
       </nav>
 
       {/* ---------- Capa 1: peligro inmediato ---------- */}
