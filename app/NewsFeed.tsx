@@ -62,6 +62,8 @@ export default function NewsFeed() {
   const [feed, setFeed] = useState<Feed | null>(null);
   const [loading, setLoading] = useState(true);
   const [now, setNow] = useState(() => Date.now());
+  // Filtro de vista (cliente): no toca el pipeline ni la red, solo qué se pinta.
+  const [filter, setFilter] = useState<"all" | "ve" | "intl">("all");
 
   useEffect(() => {
     let alive = true;
@@ -97,6 +99,13 @@ export default function NewsFeed() {
     return <SourceLinks />;
   }
 
+  const veCount = feed.items.filter((i) => i.sourceType === "ve").length;
+  const intlCount = feed.items.filter((i) => i.sourceType === "intl").length;
+  const shown =
+    filter === "all"
+      ? feed.items
+      : feed.items.filter((i) => i.sourceType === filter);
+
   return (
     <>
       {feed.updatedAt > 0 && (
@@ -109,8 +118,28 @@ export default function NewsFeed() {
         dentro de Venezuela y no abrir. Por eso te dejamos el resumen aquí: es
         lo esencial de lo que dice la fuente.
       </p>
+
+      <div className="chips">
+        {(
+          [
+            ["all", "Todas", feed.items.length],
+            ["ve", "Nacionales", veCount],
+            ["intl", "Internacionales", intlCount],
+          ] as const
+        ).map(([key, label, count]) => (
+          <button
+            key={key}
+            className={`chip ${filter === key ? "chip-on" : ""}`}
+            onClick={() => setFilter(key)}
+            aria-pressed={filter === key}
+          >
+            {label} <span className="chip-count">{count}</span>
+          </button>
+        ))}
+      </div>
+
       <div className="news">
-        {feed.items.map((it) => {
+        {shown.map((it) => {
           const pill = PILL[it.sourceType] ?? PILL.intl;
           return (
             <a
