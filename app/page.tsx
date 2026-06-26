@@ -1,13 +1,18 @@
 import LiveSeismic from "./LiveSeismic";
 import NewsFeed from "./NewsFeed";
 import { readFeed } from "@/lib/feed";
+import { fetchVenezuelaQuakes } from "@/lib/usgs";
 
-// ISR: regenera el HTML (con el feed embebido) cada 60s, igual que la caché
-// de /api/feed. Las noticias van en el HTML inicial → sin layout shift (CLS).
+// ISR: regenera el HTML (con feed y sísmico embebidos) cada 60s, igual que la
+// caché. Ambos van en el HTML inicial → sin layout shift (CLS). El cliente
+// sigue refrescando en vivo encima.
 export const revalidate = 60;
 
 export default async function Home() {
-  const initialFeed = await readFeed();
+  const [initialFeed, initialQuakes] = await Promise.all([
+    readFeed(),
+    fetchVenezuelaQuakes().catch(() => undefined),
+  ]);
   return (
     <main>
       <header className="masthead">
@@ -34,7 +39,7 @@ export default async function Home() {
           Actividad sísmica en vivo, directo del servicio oficial. Tu teléfono
           consulta la fuente cada minuto y medio.
         </p>
-        <LiveSeismic />
+        <LiveSeismic initialQuakes={initialQuakes} />
       </section>
 
       {/* ---------- Capa 2: qué está pasando (feed resumido) ---------- */}

@@ -1,27 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  fetchVenezuelaQuakes,
+  MIN_MAG,
+  WINDOW_DAYS,
+  type Quake,
+} from "@/lib/usgs";
 
-// Region Venezuela (caja aproximada) para filtrar el feed de USGS.
-const BBOX = {
-  minlatitude: 0.5,
-  maxlatitude: 13.5,
-  minlongitude: -74,
-  maxlongitude: -59,
-};
-const MIN_MAG = 2.5;
-const WINDOW_DAYS = 7;
 const POLL_MS = 90_000; // 90 s: se siente en vivo sin castigar el plan de datos.
-
-type Quake = {
-  id: string;
-  mag: number | null;
-  magType: string | null;
-  place: string;
-  time: number;
-  depth: number | null;
-  tsunami: number;
-};
 
 type State = {
   quakes: Quake[];
@@ -110,38 +97,25 @@ function computeVerdict(
   };
 }
 
-export default function LiveSeismic() {
+export default function LiveSeismic({
+  initialQuakes,
+}: {
+  initialQuakes?: Quake[];
+}) {
+  // Estado inicial desde el servidor (ISR) → la tarjeta nace a su altura
+  // completa en el HTML, sin crecer al cargar (elimina el CLS).
   const [state, setState] = useState<State>({
-    quakes: [],
+    quakes: initialQuakes ?? [],
     lastSuccess: null,
     error: false,
-    loading: true,
+    loading: initialQuakes === undefined,
   });
   const [now, setNow] = useState(() => Date.now());
-  const lastQuakes = useRef<Quake[]>([]);
+  const lastQuakes = useRef<Quake[]>(initialQuakes ?? []);
 
   const load = useCallback(async () => {
     try {
-      const start = new Date(Date.now() - WINDOW_DAYS * 86_400_000)
-        .toISOString()
-        .slice(0, 10);
-      const url =
-        `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson` +
-        `&starttime=${start}&minmagnitude=${MIN_MAG}&orderby=time` +
-        `&minlatitude=${BBOX.minlatitude}&maxlatitude=${BBOX.maxlatitude}` +
-        `&minlongitude=${BBOX.minlongitude}&maxlongitude=${BBOX.maxlongitude}`;
-      const res = await fetch(url, { cache: "no-store" });
-      if (!res.ok) throw new Error(String(res.status));
-      const data = await res.json();
-      const quakes: Quake[] = (data.features ?? []).map((f: any) => ({
-        id: f.id,
-        mag: f.properties?.mag ?? null,
-        magType: f.properties?.magType ?? null,
-        place: f.properties?.place ?? "Venezuela",
-        time: f.properties?.time ?? 0,
-        depth: f.geometry?.coordinates?.[2] ?? null,
-        tsunami: f.properties?.tsunami ?? 0,
-      }));
+      const quakes = await fetchVenezuelaQuakes();
       lastQuakes.current = quakes;
       setState({
         quakes,
