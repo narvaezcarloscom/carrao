@@ -29,6 +29,7 @@ export default async function Home() {
         <a href="#ahora">Ahora</a>
         <a href="#noticias">Noticias</a>
         <a href="#quehacer">Qué hacer</a>
+        <a href="#migente">Mi gente</a>
       </nav>
 
       {/* ---------- Capa 1: peligro inmediato ---------- */}
@@ -126,6 +127,57 @@ export default async function Home() {
             </div>
             <div className="lc-meta">
               Atención, primeros auxilios y restablecimiento del contacto familiar
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section className="sec-people">
+        <span className="layer-tag">Mi gente</span>
+        <h2>Estás afuera y no logras contactar a los tuyos</h2>
+        <p className="section-note">
+          Cuando la señal va y viene, el orden importa más que la insistencia.
+          Esto ayuda a que tu mensaje llegue sin saturar más la red.
+        </p>
+        <ol className="steps">
+          <li>
+            <strong>No llames: escribe.</strong> Las llamadas saturan la red; un
+            mensaje de texto pasa donde la voz no y queda esperando a que vuelva
+            la señal. WhatsApp es el canal más usado con la diáspora; si va lento
+            o no entra, prueba Telegram o un SMS normal. Pide algo simple:
+            «responde &lsquo;estoy bien&rsquo; cuando puedas».
+          </li>
+          <li>
+            <strong>Un solo punto de contacto.</strong> En vez de llamar a todos,
+            identifica a un familiar o vecino con mejor señal; él confirma al
+            resto. Menos saturación, una sola respuesta que esperar.
+          </li>
+          <li>
+            <strong>Paciencia con la red intermitente.</strong> Tras un sismo la
+            señal va y viene. Manda el mensaje y espera: puede llegar horas
+            después. Reintentar de más empeora la congestión.
+          </li>
+          <li>
+            <strong>Si pasan horas o días sin respuesta.</strong> Existe un
+            servicio neutral y gratuito de la Cruz Roja y el CICR para localizar
+            y reconectar familiares separados por una emergencia, cruzando
+            fronteras.
+          </li>
+        </ol>
+        <div className="links">
+          <a
+            className="link-card"
+            href="https://familylinks.icrc.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            <div className="lc-title">
+              Restablecimiento del Contacto Familiar (CICR){" "}
+              <span className="arrow">→</span>
+            </div>
+            <div className="lc-meta">
+              Servicio neutral y gratuito para localizar y reconectar familiares
+              separados por emergencias, a través de fronteras.
             </div>
           </a>
         </div>
