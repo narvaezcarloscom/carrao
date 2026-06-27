@@ -53,6 +53,15 @@ Fuentes activas (`lib/sources.ts`): BBC Mundo, ReliefWeb (`?primary_country=240`
 
 `public/sw.js` (registrado por `app/SWRegister.tsx`, **solo en producción** — en dev pelea con el HMR) cachea shell + `/api/feed` + CSS con estrategia **network-first**: online siempre sirve fresco, y solo si la red falla cae a la última copia cacheada. Sin precache al instalar (peso cero al inicio). `/api/refresh` nunca se cachea. Es **excepción consciente** a la regla "JS al mínimo": corre fuera del hilo principal y solo añade fallback offline.
 
+### Difusión a Telegram (construida, DORMIDA)
+
+El canal push/anti-bloqueo está cableado pero **inactivo** hasta tener env vars:
+- `lib/telegram.ts` — publicador (no-op si faltan token/canal, nunca lanza).
+- `lib/seismicPush.ts` + cron `/api/refresh/seismic` (cada 5 min) — empuja sismos **M≥4.0 o tsunami**; dedup por ids en Blob (`seismic-pushed.json`); **primera corrida hace baseline sin postear** (no dispara la historia).
+- `lib/feed.ts` — al final de `refreshFeed`, difunde las noticias nuevas (tope 8/ciclo, silenciosas).
+
+**Activar:** crear bot con @BotFather → token; crear canal; bot como admin; setear `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHANNEL` en Vercel; **redeploy**. Sin eso, ambos crons son no-op seguros.
+
 ## Variables de entorno (en Vercel)
 
 | Var | Para qué | Origen |
@@ -93,13 +102,13 @@ En condiciones normales **no hace falta** — el cron corre solo cada 15 min.
 
 ## Pendientes / próximos
 
-- **Canal de difusión Telegram (frente líder):** publicar el veredicto sísmico significativo + noticias nuevas a un canal, vía Bot API, desde el cron. Es push (llega a la app ya abierta) y esquiva el bloqueo de IP que un dominio no esquiva. Mueve la pieza fuerte al canal correcto sin tirar nada del backend actual.
+- **Activar el canal de Telegram (ya construido, dormido):** el cableado existe (ver "Difusión a Telegram"). Para encenderlo: bot + canal + `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHANNEL` + redeploy. **Antes hay que desplegar el lote del 2026-06-27** (EMSC + SW + Telegram quedaron en GitHub sin deploy, por decisión de Carlos).
 - **Imagen compartible v2:** llevar el contenido del bloque diáspora ("no logras contactar a los tuyos" → `familylinks.icrc.org`) **dentro** de la imagen de historia, no solo en la página.
 - **Probar el share nativo en iPhone real:** validar el flujo "Añadir a tu historia" en iOS (no testeable sin dispositivo físico).
 - **Reel de presentación** (guion en sesión 2026-06-25, pendiente de elegir versión).
 - Opcional: feed sísmico server-side cada 2 min, sumar EMSC/Funvisis/PTWC, Reuters/AP por vía no-RSS.
 
-*Hecho 2026-06-26/27 (antes pendientes): compartir tarjeta sísmica (enlace + imagen de historia), bloque diáspora y "Mi gente" de vuelta al nav.*
+*Hecho 2026-06-26/27 (antes pendientes): compartir tarjeta sísmica (enlace + imagen de historia), bloque diáspora y "Mi gente" de vuelta al nav, EMSC como 2ª fuente sísmica, service worker offline, pase de honestidad de alcance, y el cableado dormido de Telegram. Los últimos tres lotes (EMSC + SW + Telegram) están en GitHub pendientes de deploy.*
 
 ## Decisiones conscientes (no se hace, y por qué)
 
