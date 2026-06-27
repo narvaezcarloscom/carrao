@@ -278,6 +278,37 @@ h2 {
   font-weight: 600;
 }
 
+/* ---------- Compartir tarjeta sismica ---------- */
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.share-btn {
+  font-family: inherit;
+  flex: 1 1 auto;
+  min-height: 46px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+.share-btn:active { background: var(--bg); }
+.share-btn:disabled { opacity: 0.6; cursor: default; }
+.share-btn-story {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+  color: var(--accent);
+}
+.share-btn-story:active { background: #f8e6cb; }
+
 /* ---------- Listas de proteccion / enlaces ---------- */
 .steps {
   margin-top: 14px;

@@ -7,8 +7,13 @@ import {
   WINDOW_DAYS,
   type Quake,
 } from "@/lib/usgs";
+import { drawStoryImage } from "./shareImage";
 
 const POLL_MS = 90_000; // 90 s: se siente en vivo sin castigar el plan de datos.
+
+const SHARE_URL = "https://carraocanta.com";
+const SHARE_TEXT =
+  "Sismos en Venezuela ahora mismo, según USGS — info verificada, liviana y sin postura política:";
 
 type State = {
   quakes: Quake[];
@@ -113,6 +118,39 @@ export default function LiveSeismic({
   const [now, setNow] = useState(() => Date.now());
   const lastQuakes = useRef<Quake[]>(initialQuakes ?? []);
 
+  // Compartir: segmentación por capacidad, no por sniffing. Init en false para que
+  // el render del servidor (ISR) y el primer render del cliente coincidan (sin botones,
+  // sin hydration mismatch); useEffect los revela donde el dispositivo es capaz.
+  const [cap, setCap] = useState({ link: false, image: false });
+  const [imgBusy, setImgBusy] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined") return;
+    const link = typeof navigator.share === "function";
+    let image = false;
+    try {
+      const probe = new File([new Uint8Array(0)], "probe.png", { type: "image/png" });
+      const fileCapable =
+        typeof navigator.canShare === "function" &&
+        navigator.canShare({ files: [probe] });
+      // navigator.connection no existe en iOS: ahí el filtro no aplica y el botón
+      // de imagen sí aparece (iOS es teléfono capaz por definición). En Android
+      // suprime la imagen si la red es lenta o el usuario activó ahorro de datos.
+      const conn = (
+        navigator as Navigator & {
+          connection?: { saveData?: boolean; effectiveType?: string };
+        }
+      ).connection;
+      const saveData = conn?.saveData === true;
+      const slow = conn?.effectiveType === "2g" || conn?.effectiveType === "slow-2g";
+      image = !!fileCapable && !saveData && !slow;
+    } catch {
+      image = false;
+    }
+    setCap({ link, image });
+  }, []);
+
   const load = useCallback(async () => {
     try {
       const quakes = await fetchVenezuelaQuakes();
@@ -177,6 +215,53 @@ export default function LiveSeismic({
   const last24h = quakes.filter((q) => now - q.time < 86_400_000).length;
   const tsunamiFlag = largest.tsunami === 1;
   const verdict = computeVerdict(quakes, now, tsunamiFlag);
+
+  const horaText = lastSuccess ? `actualizado ${ago(lastSuccess, now)}` : "en vivo";
+
+  const onShareLink = async () => {
+    try {
+      if (cap.link) {
+        await navigator.share({ title: "Carrao", text: SHARE_TEXT, url: SHARE_URL });
+      } else {
+        await navigator.clipboard?.writeText(`${SHARE_TEXT} ${SHARE_URL}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      // Usuario canceló o no soportado: silencioso, no romper la página.
+    }
+  };
+
+  const onShareImage = async () => {
+    if (imgBusy) return;
+    setImgBusy(true);
+    try {
+      const blob = await drawStoryImage({
+        verdict,
+        latest: {
+          mag: latest.mag != null ? latest.mag.toFixed(1) : "—",
+          meaning: magMeaning(latest.mag),
+          place: translatePlace(latest.place),
+          depthText:
+            latest.depth != null ? `${Math.round(latest.depth)} km de profundidad` : null,
+          agoText: ago(latest.time, now),
+        },
+        largest: {
+          mag: largest.mag != null ? largest.mag.toFixed(1) : "—",
+          agoText: ago(largest.time, now),
+        },
+        last24h,
+        tsunamiFlag,
+        horaText,
+      });
+      const file = new File([blob], "carrao-sismo.png", { type: "image/png" });
+      await navigator.share({ files: [file], title: "Carrao", text: SHARE_TEXT });
+    } catch {
+      // AbortError (canceló) o fallo de canvas: silencioso, no romper la página.
+    } finally {
+      setImgBusy(false);
+    }
+  };
 
   return (
     <div className="card">
@@ -255,6 +340,22 @@ export default function LiveSeismic({
         No se puede predecir un sismo. Te mostramos lo que ya ocurrió, según el
         U.S. Geological Survey (USGS) para la región Venezuela.
       </p>
+
+      <div className="share-row">
+        <button type="button" className="share-btn" onClick={onShareLink}>
+          {cap.link ? "Compartir" : copied ? "Enlace copiado ✓" : "Copiar enlace"}
+        </button>
+        {cap.image && (
+          <button
+            type="button"
+            className="share-btn share-btn-story"
+            onClick={onShareImage}
+            disabled={imgBusy}
+          >
+            {imgBusy ? "Generando…" : "Imagen para tu historia"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
