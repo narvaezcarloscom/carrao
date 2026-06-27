@@ -24,12 +24,12 @@ Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · CSS plano · Ver
 
 ## Arquitectura
 
-La página (`app/page.tsx`) son 4 capas en scroll vertical, con barra de salto sticky (Ahora · Noticias · Qué hacer) y color semántico por sección:
+La página (`app/page.tsx`) son 4 capas en scroll vertical, con barra de salto sticky (Ahora · Noticias · Qué hacer · Mi gente) y color semántico por sección:
 
-1. **Capa 1 — Sísmico** (`app/LiveSeismic.tsx`): componente cliente que consulta el feed GeoJSON de **USGS cada 90s** (región Venezuela). Muestra un **veredicto en palabras** (no datos crudos) + estado de tsunami + último temblor con su significado. Sin servidor — el teléfono consulta USGS directo.
+1. **Capa 1 — Sísmico** (`app/LiveSeismic.tsx`): componente cliente que consulta el feed GeoJSON de **USGS cada 90s** (región Venezuela). Muestra un **veredicto en palabras** (no datos crudos) + estado de tsunami + último temblor con su significado. Sin servidor — el teléfono consulta USGS directo. Incluye **compartir, atado a la capacidad del dispositivo, no a sniffing**: botón de enlace/texto universal (WhatsApp/Telegram) y, solo en teléfonos que pueden compartir archivos y no están en 2G/ahorro de datos, **imagen 1080×1920 para historia** generada en cliente con canvas y fuentes del sistema (`app/shareImage.ts`). La promesa 2G queda intacta: el usuario en el país nunca descarga el generador. Flags init en `false` → sin hydration mismatch con el ISR. Spec: `docs/superpowers/specs/2026-06-26-compartir-sismo-design.md`.
 2. **Capa 2 — Noticias** (`app/NewsFeed.tsx`): consume `/api/feed`, renderiza tarjetas resumidas con chips de filtro (Todas/Nacionales/Internacionales, filtro de **cliente**, cero red) y colapso a 6 + "Ver más". Fallback con gracia a enlaces curados si el feed está vacío.
 3. **Capa 3 — Protocolos** (estático): qué hacer si vuelve a temblar / si el hogar no es seguro + Protección Civil.
-4. **Capa 4 — Mi gente** (estático): Cruz Roja Venezolana. *Fuera del nav a propósito hasta tener más herramientas (ver Pendientes).*
+4. **Capa 4 — Mi gente** (estático, dos bloques, **en el nav**): *Busco a un familiar* (Cruz Roja Venezolana, perspectiva desde dentro) y *Estás afuera y no logras contactar a los tuyos* (diáspora: 4 pasos ordenados y apolíticos — escribir en vez de llamar con WhatsApp/Telegram/SMS, un punto de contacto, paciencia con la red, y el rastreo transfronterizo del **CICR `familylinks.icrc.org`**). Sin mención a postura de gobierno sobre apps de mensajería (apolítico). Devuelta al nav tras ganar peso real.
 
 ### Pipeline de noticias (v2)
 
@@ -86,7 +86,13 @@ En condiciones normales **no hace falta** — el cron corre solo cada 15 min.
 
 ## Pendientes / próximos
 
-- **Mi gente:** expandir con más herramientas (no solo Cruz Roja) y devolverla al nav con peso real. Carlos quiere retomarla "en unos días".
-- **Bloque diáspora:** "estás afuera y no logras contactar a los tuyos → esto haces, en orden" (incluiría el rastreo transfronterizo CICR `familylinks.icrc.org`).
+- **Imagen compartible v2:** llevar el contenido del bloque diáspora ("no logras contactar a los tuyos" → `familylinks.icrc.org`) **dentro** de la imagen de historia, no solo en la página.
+- **Probar el share nativo en iPhone real:** validar el flujo "Añadir a tu historia" en iOS (no testeable sin dispositivo físico).
 - **Reel de presentación** (guion en sesión 2026-06-25, pendiente de elegir versión).
 - Opcional: feed sísmico server-side cada 2 min, sumar EMSC/Funvisis/PTWC, Reuters/AP por vía no-RSS.
+
+*Hecho 2026-06-26/27 (antes pendientes): compartir tarjeta sísmica (enlace + imagen de historia), bloque diáspora y "Mi gente" de vuelta al nav.*
+
+## Decisiones conscientes (no se hace, y por qué)
+
+- **Filtro de casos individuales de personas en el feed** ("se encontró un niño, se buscan sus padres" / "padres buscan a…"): **descartado.** Choca de frente con la regla **Cero PII**; esos avisos viven en redes sociales, no en el RSS de medios (no habría material); y son vector conocido de estafa/desinformación y riesgo para menores tras un desastre. El canal seguro para "jalar el hilo" es el **CICR** (ya enlazado en "Mi gente"). Versión segura posible a futuro: un chip de *noticias institucionales del esfuerzo* de reunificación (centros, activación de rastreo — sin PII), solo si las fuentes lo producen.

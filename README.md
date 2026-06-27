@@ -36,7 +36,7 @@ La información se organiza por las preguntas que se hace quien está en la emer
 - **Peligro inmediato** — réplicas, alerta de tsunami, zona de riesgo (dato sísmico oficial en vivo).
 - **Qué está pasando** — lo confirmado por agencias internacionales y fuentes creíbles, resumido y con enlace a la fuente original.
 - **Qué hago ahora** — protocolos de seguridad y acción.
-- **Mi gente** — dónde buscar a familiares, enlazando a los índices oficiales de reunificación.
+- **Mi gente** — reconectar con familiares: búsqueda desde dentro y, para quien está afuera, el rastreo transfronterizo del CICR. Solo enlaces a servicios oficiales; nunca listas de personas.
 
 ### Principios
 
@@ -46,7 +46,7 @@ La información se organiza por las preguntas que se hace quien está en la emer
 
 ## Estado
 
-En diseño y construcción. El documento de diseño completo está en
+En vivo en **carraocanta.com** y en evolución activa. Los documentos de diseño están en
 [`docs/superpowers/specs/`](docs/superpowers/specs/).
 
 ## Reutilización
