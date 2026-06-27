@@ -26,7 +26,7 @@ Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · CSS plano · Ver
 
 La página (`app/page.tsx`) son 4 capas en scroll vertical, con barra de salto sticky (Ahora · Noticias · Qué hacer · Mi gente) y color semántico por sección:
 
-1. **Capa 1 — Sísmico** (`app/LiveSeismic.tsx`): componente cliente que consulta el feed GeoJSON de **USGS cada 90s** (región Venezuela). Muestra un **veredicto en palabras** (no datos crudos) + estado de tsunami + último temblor con su significado. Sin servidor — el teléfono consulta USGS directo. Incluye **compartir, atado a la capacidad del dispositivo, no a sniffing**: botón de enlace/texto universal (WhatsApp/Telegram) y, solo en teléfonos que pueden compartir archivos y no están en 2G/ahorro de datos, **imagen 1080×1920 para historia** generada en cliente con canvas y fuentes del sistema (`app/shareImage.ts`). La promesa 2G queda intacta: el usuario en el país nunca descarga el generador. Flags init en `false` → sin hydration mismatch con el ISR. Spec: `docs/superpowers/specs/2026-06-26-compartir-sismo-design.md`.
+1. **Capa 1 — Sísmico** (`app/LiveSeismic.tsx`): componente cliente que consulta **USGS + EMSC cada 90s** (`lib/usgs.ts`: fetch en paralelo, merge + dedup por tiempo/distancia, USGS preferido). Muestra un **veredicto en palabras** (no datos crudos) + estado de tsunami + último temblor con su significado. Sin servidor — el teléfono consulta ambas fuentes directo (las dos mandan CORS `*`); `Promise.allSettled` → si una cae, la otra sigue. Incluye **compartir, atado a la capacidad del dispositivo, no a sniffing**: botón de enlace/texto universal (WhatsApp/Telegram) y, solo en teléfonos que pueden compartir archivos y no están en 2G/ahorro de datos, **imagen 1080×1920 para historia** generada en cliente con canvas y fuentes del sistema (`app/shareImage.ts`). La promesa 2G queda intacta: el usuario en el país nunca descarga el generador. Flags init en `false` → sin hydration mismatch con el ISR. Spec: `docs/superpowers/specs/2026-06-26-compartir-sismo-design.md`.
 2. **Capa 2 — Noticias** (`app/NewsFeed.tsx`): consume `/api/feed`, renderiza tarjetas resumidas con chips de filtro (Todas/Nacionales/Internacionales, filtro de **cliente**, cero red) y colapso a 6 + "Ver más". Fallback con gracia a enlaces curados si el feed está vacío.
 3. **Capa 3 — Protocolos** (estático): qué hacer si vuelve a temblar / si el hogar no es seguro + Protección Civil.
 4. **Capa 4 — Mi gente** (estático, dos bloques, **en el nav**): *Busco a un familiar* (Cruz Roja Venezolana, perspectiva desde dentro) y *Estás afuera y no logras contactar a los tuyos* (diáspora: 4 pasos ordenados y apolíticos — escribir en vez de llamar con WhatsApp/Telegram/SMS, un punto de contacto, paciencia con la red, y el rastreo transfronterizo del **CICR `familylinks.icrc.org`**). Sin mención a postura de gobierno sobre apps de mensajería (apolítico). Devuelta al nav tras ganar peso real.
@@ -49,6 +49,10 @@ GET /api/feed → lee feed.json del Blob, Cache-Control s-maxage=60 (CDN)
 
 Fuentes activas (`lib/sources.ts`): BBC Mundo, ReliefWeb (`?primary_country=240`), Efecto Cocuyo, El Pitazo, Runrun.es. *El Universal descartado (independencia post-2014). Reuters/AP no tienen RSS público estable.*
 
+### Resiliencia (service worker)
+
+`public/sw.js` (registrado por `app/SWRegister.tsx`, **solo en producción** — en dev pelea con el HMR) cachea shell + `/api/feed` + CSS con estrategia **network-first**: online siempre sirve fresco, y solo si la red falla cae a la última copia cacheada. Sin precache al instalar (peso cero al inicio). `/api/refresh` nunca se cachea. Es **excepción consciente** a la regla "JS al mínimo": corre fuera del hilo principal y solo añade fallback offline.
+
 ## Variables de entorno (en Vercel)
 
 | Var | Para qué | Origen |
@@ -56,6 +60,8 @@ Fuentes activas (`lib/sources.ts`): BBC Mundo, ReliefWeb (`?primary_country=240`
 | `ANTHROPIC_API_KEY` | Haiku 4.5 (resumen/traducción) | console.anthropic.com, org NDM, créditos prepago |
 | `BLOB_READ_WRITE_TOKEN` | escribir/leer feed.json | conexión del Blob store "carrao-feed" |
 | `CRON_SECRET` | autenticar el cron y el refresh manual | generado; Vercel Cron lo manda como `Authorization: Bearer` |
+| `TELEGRAM_BOT_TOKEN` | *(opcional, dormido)* canal de difusión Telegram | @BotFather; sin él el publicador es no-op |
+| `TELEGRAM_CHANNEL` | *(opcional, dormido)* destino del canal | `@handle` o id numérico; el bot debe ser admin del canal |
 
 (La conexión del Blob también crea `BLOB_STORE_ID` y `BLOB_WEBHOOK_PUBLIC_KEY`.) **Cambiar cualquier env requiere redeploy** para que tome efecto.
 
@@ -83,6 +89,7 @@ En condiciones normales **no hace falta** — el cron corre solo cada 15 min.
 - **Caché del CDN en `/api/feed`:** `s-maxage=60` + `stale-while-revalidate=300`. Tras un refresh, puede servir la versión vieja hasta ~60s (sirve `STALE` mientras revalida). Es esperado.
 - **Haiku no acepta `output_config.effort` ni `thinking` adaptativo** — no se los pases.
 - **`output_config` (structured outputs) no está tipado en `@anthropic-ai/sdk` 0.70** — se envía con cast; el prompt pide JSON como respaldo y el parseo es tolerante.
+- **El service worker persiste en el dispositivo:** una vez desplegado, `sw.js` vive en los navegadores que ya visitaron el sitio. Para forzar cambios, bump `CACHE` (`carrao-v1` → `v2`). Para *matarlo*, desplegar un `sw.js` que llame `self.registration.unregister()`. Network-first evita servir contenido viejo cuando hay señal.
 
 ## Pendientes / próximos
 
