@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import SWRegister from "./SWRegister";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://carraocanta.com"),
@@ -39,7 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        {children}
+        <SWRegister />
+      </body>
     </html>
   );
 }
