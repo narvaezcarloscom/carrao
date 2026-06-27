@@ -6,7 +6,7 @@
 
 ## Qué es
 
-**No es un medio. Es un puente.** No produce noticias: reúne lo que fuentes confiables ya verificaron, lo resume/traduce y lo entrega ultra-ligero para teléfonos modestos, conexiones saturadas y bloqueo de IP del país. Audiencia primaria: **quien está dentro de Venezuela**. Esfuerzo **independiente, sin fines de lucro, sin postura política**.
+**No es un medio. Es un puente.** No produce noticias: reúne lo que fuentes confiables ya verificaron, lo resume/traduce y lo entrega ultra-ligero para teléfonos modestos, conexiones saturadas y datos caros. *Honestidad de alcance: la ligereza ataca el ancho de banda, no la censura — contra el bloqueo de IP no basta un sitio liviano; ese frente es el canal de difusión Telegram (ver Pendientes).* Audiencia primaria: **quien está dentro de Venezuela**. Esfuerzo **independiente, sin fines de lucro, sin postura política**.
 
 Documento de diseño original (brainstorm): `docs/superpowers/specs/2026-06-25-carrao-design.md` (artefacto histórico; la foto actual es este CLAUDE.md + el README público).
 
@@ -86,6 +86,7 @@ En condiciones normales **no hace falta** — el cron corre solo cada 15 min.
 
 ## Pendientes / próximos
 
+- **Canal de difusión Telegram (frente líder):** publicar el veredicto sísmico significativo + noticias nuevas a un canal, vía Bot API, desde el cron. Es push (llega a la app ya abierta) y esquiva el bloqueo de IP que un dominio no esquiva. Mueve la pieza fuerte al canal correcto sin tirar nada del backend actual.
 - **Imagen compartible v2:** llevar el contenido del bloque diáspora ("no logras contactar a los tuyos" → `familylinks.icrc.org`) **dentro** de la imagen de historia, no solo en la página.
 - **Probar el share nativo en iPhone real:** validar el flujo "Añadir a tu historia" en iOS (no testeable sin dispositivo físico).
 - **Reel de presentación** (guion en sesión 2026-06-25, pendiente de elegir versión).

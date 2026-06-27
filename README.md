@@ -10,7 +10,7 @@
 
 Carrao **no es un medio. Es un puente.**
 
-No producimos noticias. Reunimos en un solo lugar lo que las fuentes confiables ya verificaron, y lo entregamos tratado para el teléfono, la conexión y el bloqueo de IP de quien está dentro de Venezuela durante una emergencia.
+No producimos noticias. Reunimos en un solo lugar lo que las fuentes confiables ya verificaron, y lo entregamos tratado para las condiciones reales de quien está dentro de Venezuela durante una emergencia: teléfono modesto, conexión saturada, datos caros.
 
 Nuestro valor no es decidir qué es verdad —eso lo deciden las fuentes confiables que ya tienen su propio protocolo de validación—; nuestro valor es el **acceso**: que el dato verificado llegue a la mano de la persona en las condiciones reales en las que está.
 
@@ -19,6 +19,8 @@ Nuestro valor no es decidir qué es verdad —eso lo deciden las fuentes confiab
 Durante una catástrofe se repite una **paradoja de latencia**: las fuentes oficiales internacionales (USGS, centros de alerta de tsunami) tienen el dato primero y más preciso, pero a quien lo está viviendo le llega tarde —por conectividad degradada, intermediación y bloqueo local. La persona parada en el temblor es la última en saber la magnitud real o si hay una alerta vigente.
 
 Carrao nace para cerrar esa brecha, a raíz del terremoto que sacudió la costa centro-norte de Venezuela el 24 de junio de 2026.
+
+Con honestidad sobre el alcance: la ligereza ataca la **conectividad degradada** y la **intermediación**, no el **bloqueo de IP**. Contra la censura, un sitio liviano no basta —hace falta un canal de difusión que llegue por otra vía (Telegram), y esa es la pieza en camino.
 
 El nombre viene del carrao (*Aramus guarauna*), el ave llanera cuyo canto anuncia la lluvia antes que cualquier instrumento y se oye a gran distancia por todo el llano: el aviso temprano que llega lejos.
 
