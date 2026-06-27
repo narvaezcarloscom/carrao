@@ -12,6 +12,11 @@ export function telegramEnabled(): boolean {
   return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHANNEL);
 }
 
+// Escapa para parse_mode HTML (los titulares de noticias traen texto arbitrario).
+export function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 type PostOptions = {
   silent?: boolean; // sin sonido/vibración (para items de baja urgencia)
   preview?: boolean; // mostrar vista previa del enlace (default: no, por ligereza)

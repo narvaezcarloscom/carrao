@@ -2,6 +2,9 @@ import { list, put } from "@vercel/blob";
 import Parser from "rss-parser";
 import { SOURCES, isRelevant, type SourceType } from "./sources";
 import { summarize } from "./summarize";
+import { postToTelegram, telegramEnabled, escapeHtml } from "./telegram";
+
+const MAX_TELEGRAM_PER_CYCLE = 8; // tope de noticias al canal por ciclo (anti-spam)
 
 export type FeedItem = {
   url: string;
@@ -96,5 +99,20 @@ export async function refreshFeed(): Promise<{ added: number; total: number }> {
 
   const feed: Feed = { updatedAt: Date.now(), items: merged };
   await writeFeed(feed);
+
+  // Difusión a Telegram de lo nuevo (dormido si el canal no está configurado).
+  // Nunca rompe el ciclo: postToTelegram captura sus propios errores.
+  if (telegramEnabled() && fresh.length) {
+    const toPost = [...fresh]
+      .sort((a, b) => b.publishedAt - a.publishedAt)
+      .slice(0, MAX_TELEGRAM_PER_CYCLE);
+    for (const item of toPost) {
+      await postToTelegram(
+        `📰 <b>${escapeHtml(item.headline)}</b>\n${escapeHtml(item.sourceName)}\n${item.url}`,
+        { silent: true }
+      );
+    }
+  }
+
   return { added: fresh.length, total: merged.length };
 }
