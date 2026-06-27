@@ -1,6 +1,5 @@
 # Carrao
 
-> Cuando el carrao canta, el llano se prepara.
 > Información verificada de emergencia, en tu mano, al instante.
 
 **carraocanta.com**
